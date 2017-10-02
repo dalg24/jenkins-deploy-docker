@@ -1,0 +1,41 @@
+version: '2'
+services:
+  jenkins:
+    restart: always
+    environment:
+#      - JENKINS_OPTS=--httpPort=-1 --httpsPort=8080 --httpsCertificate=/var/lib/jenkins/cert --httpsPrivateKey=/var/lib/jenkins/pk --prefix=/jenkins-ci
+      - JENKINS_OPTS=--httpPort=8080 --prefix=/jenkins-ci
+      - TZ=America/New_York
+    image: 'jenkins/jenkins:lts'
+    expose:
+      - 8080
+    volumes:
+      - 'jenkins_home:/var/jenkins_home'
+      - './secrets/jenkins_id_rsa:/var/jenkins_home/.ssh/id_rsa:ro'
+      - './secrets/jenkins_id_rsa.pub:/var/jenkins_home/.ssh/id_rsa.pub:ro'
+#      - '$SECRETS_VOLUME/cert.pem:/var/lib/jenkins/cert:ro'
+#      - '$SECRETS_VOLUME/privkey-rsa.pem:/var/lib/jenkins/pk:ro'
+  nginx:
+    restart: always
+    image: 'nginx:latest'
+    volumes:
+      - './jenkins.conf:/etc/nginx/conf.d/jenkins.conf:ro'
+#      - './secrets/cert.pem:/etc/nginx/ssl/server.crt:ro'
+#      - './secrets/privkey.pem:/etc/nginx/ssl/server.key:ro'
+      - 'secrets:/etc/letsencrypt:ro'
+    ports:
+      - '80:80'
+      - '443:443'
+#    environment:
+#      - NGINX_HOST=cloud.cees.ornl.gov'
+#      - NGINX_PORT=443
+    links:
+      - jenkins
+#    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+volumes:
+  jenkins_home:
+    external: true 
+  secrets:
+    external:
+      name: ${SECRETS_VOLUME}
+

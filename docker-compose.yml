@@ -23,9 +23,14 @@ services:
     restart: always
     image: 'nginx:latest'
     volumes:
+      # nginx server configuration file.
       - './nginx.conf:/etc/nginx/conf.d/nginx.conf:ro'
+      # Diffie-Helman parameters for high-quality SSL config.
       - './secrets/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro'
+      # Persistent volume with letsencryt trusted SSL certificate.
       - 'secrets:/etc/letsencrypt:ro'
+      # Mount external volume data with Jekyll site that has been deployed by 
+      # Git post-receive hook.
       - 'www:/var/www/html:ro'
     ports:
       - '80:80'

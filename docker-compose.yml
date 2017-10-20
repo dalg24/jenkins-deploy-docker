@@ -10,12 +10,15 @@ services:
     expose:
       - 8080
     volumes:
+      # All Jenkins data lives in an external volume that is persistent.
       - 'jenkins_home:/var/jenkins_home'
+      # Mount Git repo from the host to backup the configuration files under
+      # version control in the Jenkins home directory
+      - '${GIT_REPO}:/home/git/jenkins.git'
+      # Private and public SSH keys that the Jenkins CI server will be using
+      # to connect to the slave agents.
       - './secrets/jenkins_id_rsa:/var/jenkins_home/.ssh/id_rsa:ro'
       - './secrets/jenkins_id_rsa.pub:/var/jenkins_home/.ssh/id_rsa.pub:ro'
-      - '${GIT_REPO}:/home/git/jenkins.git'
-#      - '$SECRETS_VOLUME/cert.pem:/var/lib/jenkins/cert:ro'
-#      - '$SECRETS_VOLUME/privkey-rsa.pem:/var/lib/jenkins/pk:ro'
   nginx:
     restart: always
     image: 'nginx:latest'

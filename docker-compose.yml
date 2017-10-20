@@ -23,7 +23,7 @@ services:
     restart: always
     image: 'nginx:latest'
     volumes:
-      - './jenkins.conf:/etc/nginx/conf.d/jenkins.conf:ro'
+      - './nginx.conf:/etc/nginx/conf.d/nginx.conf:ro'
 #      - './secrets/cert.pem:/etc/nginx/ssl/server.crt:ro'
 #      - './secrets/privkey.pem:/etc/nginx/ssl/server.key:ro'
       - './secrets/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro'

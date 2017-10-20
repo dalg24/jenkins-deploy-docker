@@ -24,8 +24,6 @@ services:
     image: 'nginx:latest'
     volumes:
       - './nginx.conf:/etc/nginx/conf.d/nginx.conf:ro'
-#      - './secrets/cert.pem:/etc/nginx/ssl/server.crt:ro'
-#      - './secrets/privkey.pem:/etc/nginx/ssl/server.key:ro'
       - './secrets/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro'
       - 'secrets:/etc/letsencrypt:ro'
       - 'www:/var/www/html:ro'

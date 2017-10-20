@@ -23,6 +23,7 @@ services:
 #      - './secrets/cert.pem:/etc/nginx/ssl/server.crt:ro'
 #      - './secrets/privkey.pem:/etc/nginx/ssl/server.key:ro'
       - 'secrets:/etc/letsencrypt:ro'
+      - 'www:/var/www/html:ro'
     ports:
       - '80:80'
       - '443:443'
@@ -38,4 +39,7 @@ volumes:
   secrets:
     external:
       name: ${SECRETS_VOLUME}
+  www:
+    external:
+      name: ${DATA_WWW}
 

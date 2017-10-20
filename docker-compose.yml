@@ -19,6 +19,7 @@ services:
       # to connect to the slave agents.
       - './secrets/jenkins_id_rsa:/var/jenkins_home/.ssh/id_rsa:ro'
       - './secrets/jenkins_id_rsa.pub:/var/jenkins_home/.ssh/id_rsa.pub:ro'
+    working_dir: /var/jenkins_home
   nginx:
     restart: always
     image: 'nginx:latest'

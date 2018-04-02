@@ -9,6 +9,8 @@ services:
     image: 'jenkins/jenkins:lts'
     expose:
       - 8080
+    ports:
+      - '50000:50000'
     volumes:
       # All Jenkins data lives in an external volume that is persistent.
       - 'jenkins_home:/var/jenkins_home'
